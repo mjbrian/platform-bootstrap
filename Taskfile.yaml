@@ -1,0 +1,28 @@
+version: '3'
+
+vars:
+  LAB:
+    sh: echo "$HOME/lab"
+
+tasks:
+  setup:
+    desc: Install or update everything on this Mac
+    cmds: [./bootstrap.sh]
+  doctor:
+    desc: Check tools, the VM, and logins
+    cmds: [./scripts/doctor.sh]
+  aws:login:
+    desc: Get short lived AWS credentials through the browser
+    cmds: [aws login --profile lab]
+  cluster:up:
+    desc: Create the local cluster and hand it to Argo CD
+    dir: '{{.LAB}}/platform-gitops'
+    cmds: [./bootstrap/bootstrap-local.sh]
+  cluster:down:
+    desc: Delete the local cluster
+    cmds: [k3d cluster delete lab]
+  update:
+    desc: Pull every repo and rerun setup
+    cmds:
+      - for r in {{.LAB}}/*/; do git -C "$r" pull --ff-only; done
+      - task: setup

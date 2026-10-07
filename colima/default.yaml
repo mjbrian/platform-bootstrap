@@ -1,0 +1,7 @@
+cpu: 6
+memory: 10
+disk: 80
+vmType: vz
+rosetta: true
+mountType: virtiofs
+runtime: docker
