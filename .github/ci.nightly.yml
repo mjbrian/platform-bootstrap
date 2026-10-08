@@ -1,0 +1,21 @@
+name: bootstrap
+on:
+  pull_request:
+  push:
+    branches: [main]
+  schedule:
+    - cron: "0 6 * * 1"
+permissions:
+  contents: read
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - run: shellcheck bootstrap.sh scripts/*.sh
+  mac:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v5
+      - run: ./bootstrap.sh
+      - run: brew bundle check --file Brewfile
