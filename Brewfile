@@ -24,12 +24,10 @@ brew "chart-testing"
 brew "krew"
 brew "argocd"
 brew "velero"
-brew "fairwindsops/tap/pluto"
 brew "prometheus"
 brew "istioctl"
 
 # Infrastructure, security, and cost
-brew "tflint"
 brew "trivy"
 brew "conftest"
 brew "kyverno"

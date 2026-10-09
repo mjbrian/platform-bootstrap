@@ -27,8 +27,8 @@ export PATH="$HOME/.local/share/mise/shims:$PATH"
 log "Plugins"
 mkdir -p ~/.docker/cli-plugins
 ln -sfn "$(brew --prefix)/opt/docker-buildx/bin/docker-buildx" ~/.docker/cli-plugins/docker-buildx
-helm plugin list | grep -q unittest || helm plugin install https://github.com/helm-unittest/helm-unittest
-helm plugin list | grep -q diff || helm plugin install https://github.com/databus23/helm-diff
+helm plugin list | grep -q unittest || helm plugin install https://github.com/helm-unittest/helm-unittest.git --verify=false --version v1.1.1
+helm plugin list | grep -q diff || helm plugin install https://github.com/databus23/helm-diff.git --verify=false --version v3.15.15
 kubectl krew install cnpg 2>/dev/null || true
 
 if [ "${CI:-false}" = "true" ]; then
@@ -47,5 +47,9 @@ gh auth status >/dev/null 2>&1 || gh auth login --git-protocol ssh --web
 "$ROOT/scripts/git-signing.sh"
 [ -f "$ROOT/shell/lab.local.zsh" ] && source "$ROOT/shell/lab.local.zsh"
 "$ROOT/scripts/aws-config.sh"
+
+if ! k3d cluster list lab >/dev/null 2>&1; then
+  k3d cluster create --config k3d/lab.yaml
+fi
 
 log "Done. Open a new terminal, run 'task aws:login', then 'task doctor'."
