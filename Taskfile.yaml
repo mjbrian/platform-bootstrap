@@ -15,9 +15,10 @@ tasks:
     desc: Get short lived AWS credentials through the browser
     cmds: [aws login --profile lab]
   cluster:up:
-    desc: Create the local cluster and hand it to Argo CD
-    dir: '{{.LAB}}/platform-gitops'
-    cmds: [./bootstrap/bootstrap-local.sh]
+    desc: Create the local cluster, then hand it to Argo CD once P4.5 adds that script
+    cmds:
+      - ./scripts/cluster.sh
+      - 'cd {{.LAB}}/platform-gitops && if [ -x bootstrap/bootstrap-local.sh ]; then ./bootstrap/bootstrap-local.sh; fi'
   cluster:down:
     desc: Delete the local cluster
     cmds: [k3d cluster delete lab]
