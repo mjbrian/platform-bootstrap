@@ -41,6 +41,9 @@ mkdir -p ~/.colima/default
 [ -f ~/.colima/default/colima.yaml ] || cp "$ROOT/colima/default.yaml" ~/.colima/default/colima.yaml
 colima status >/dev/null 2>&1 || colima start
 
+log "Local cluster"
+"$ROOT/scripts/cluster.sh"
+
 log "Repos, signing, and AWS profiles"
 gh auth status >/dev/null 2>&1 || gh auth login --git-protocol ssh --web
 "$ROOT/scripts/clone-repos.sh"

@@ -4,7 +4,7 @@ metadata:
   name: lab
 servers: 1
 agents: 2
-image: rancher/k3s:TAG
+image: rancher/k3s:v1.35.5-k3s1
 ports:
   - port: 80:80
     nodeFilters: [loadbalancer]
@@ -13,5 +13,7 @@ ports:
 registries:
   create:
     name: k3d-lab-registry.localhost
-    host: "0.0.0.0"
-    hostPort: "5001"
+    host: "127.0.0.1"
+    hostPort: "5003"
+    volumes:
+      - lab-registry-data:/var/lib/registry
