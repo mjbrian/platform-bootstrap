@@ -15,6 +15,7 @@ brew "yq"
 brew "pre-commit"
 brew "gitleaks"
 brew "shellcheck"
+brew "yamllint"
 
 # Kubernetes and Helm
 brew "k3d"
