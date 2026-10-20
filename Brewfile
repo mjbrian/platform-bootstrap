@@ -37,6 +37,7 @@ brew "syft"
 brew "infracost"
 brew "pinact"
 cask "session-manager-plugin"
+cask "localstack/tap/lstk"
 
 # Go and app work
 brew "golangci-lint"
