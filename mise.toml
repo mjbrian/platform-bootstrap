@@ -1,0 +1,22 @@
+[settings]
+experimental = true
+lockfile = true
+
+[tools]
+terraform = "1"
+kubectl = "1.35"
+helm = "4"
+k3d = "5"
+argocd = "3"
+jq = "1"
+yq = "4"
+gh = "2"
+shellcheck = "0"
+"aqua:smallstep/cli" = "0"
+"aqua:aws/aws-cli" = "2"
+"aqua:google/go-containerregistry" = "0"
+"aqua:docker/cli" = "28"
+"aqua:docker/compose" = "2"
+"aqua:lima-vm/lima" = "2"
+"aqua:abiosoft/colima" = "0"
+"github:floci-io/floci-cli" = "0.2"
