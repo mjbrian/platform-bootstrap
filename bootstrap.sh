@@ -94,3 +94,22 @@ if [[ "$OS" == "Darwin" ]]; then
 else
   docker info >/dev/null 2>&1 || { echo "Docker Engine isn't running. See Before you start." >&2; exit 1; }
 fi
+
+log "3. Signing in and making the first secrets"
+gh auth status >/dev/null 2>&1 || gh auth login --web --git-protocol https
+export GITHUB_TOKEN="$(gh auth token)"
+if [[ -z "$(secret_get ca-key)" ]]; then
+  tmp="$(mktemp -d)"
+  step certificate create "Lab Root CA" "$tmp/ca.crt" "$tmp/ca.key" \
+    --profile root-ca --not-after 87600h --no-password --insecure
+  secret_set ca-key "$(base64 < "$tmp/ca.key" | tr -d '\n')"
+  secret_set ca-crt "$(base64 < "$tmp/ca.crt" | tr -d '\n')"
+  if [[ "$OS" == "Darwin" ]]; then
+    security add-trusted-cert -r trustRoot \
+      -k "$HOME/Library/Keychains/login.keychain-db" "$tmp/ca.crt"
+  else
+    sudo cp "$tmp/ca.crt" /usr/local/share/ca-certificates/lab-root-ca.crt
+    sudo update-ca-certificates
+  fi
+  rm -rf "$tmp"
+fi
