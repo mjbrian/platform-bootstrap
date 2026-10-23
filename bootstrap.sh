@@ -3,8 +3,8 @@
 set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-LAB_DIR="$HOME/lab"
-STATE_DIR="$HOME/.lab/state"
+LAB_DIR="$HOME/source/lab"
+STATE_DIR="$HOME/source/.lab/state"
 GH_OWNER="mjbrian"
 CLUSTERS=(mgmt dev prod)
 OPTIONAL_PROFILES=(observability delivery portal)
@@ -113,3 +113,14 @@ if [[ -z "$(secret_get ca-key)" ]]; then
   fi
   rm -rf "$tmp"
 fi
+
+log "4. Repos and GitHub settings"
+mkdir -p "$LAB_DIR" "$STATE_DIR"
+for r in platform-infra platform-gitops platform-tools; do
+  [[ -d "$LAB_DIR/$r" ]] || gh repo clone "$GH_OWNER/$r" "$LAB_DIR/$r"
+  git -C "$LAB_DIR/$r" pull --ff-only
+done
+tf() { terraform -chdir="$1" "${@:2}"; }
+tf "$LAB_DIR/platform-infra/github" init -input=false -lockfile=readonly \
+  -backend-config="path=$STATE_DIR/github.tfstate"
+tf "$LAB_DIR/platform-infra/github" apply -input=false -auto-approve
