@@ -33,6 +33,33 @@ secret_set() {
   fi
 }
 
+TF_DIRS=(github foundation)
+TF_PLATFORMS=(-platform=darwin_arm64 -platform=linux_amd64 -platform=linux_arm64)
+
+tf() { terraform -chdir="$1" "${@:2}"; }
+
+sync_repos() {
+  gh auth status >/dev/null 2>&1 || gh auth login --web --git-protocol https
+  mkdir -p "$LAB_DIR"
+  for r in platform-infra platform-gitops platform-tools; do
+    [[ -d "$LAB_DIR/$r" ]] || gh repo clone "$GH_OWNER/$r" "$LAB_DIR/$r"
+    git -C "$LAB_DIR/$r" pull --ff-only
+  done
+}
+
+open_lock_pr() {
+  local dir="$1" branch
+  shift
+  git -C "$dir" add "$@"
+  git -C "$dir" diff --cached --quiet && return 0
+  branch="chore/lock-$(date +%Y%m%d%H%M)"
+  git -C "$dir" switch -c "$branch"
+  git -C "$dir" commit -m "Refresh lock files"
+  git -C "$dir" push -u origin HEAD
+  (cd "$dir" && gh pr create --fill)
+  git -C "$dir" switch -
+}
+
 ACTION="build"
 PROFILE=""
 case "${1:-}" in
@@ -69,8 +96,17 @@ if [[ "$ACTION" == "lock" ]]; then
   mise lock --platform macos-arm64,linux-x64,linux-arm64
   mise install
   eval "$(mise env -s bash)"
-  log "Floci digest for versions.env"
-  crane digest floci/floci:latest
+  digest="$(crane digest floci/floci:latest)"
+  awk -v v="FLOCI_IMAGE=\"floci/floci@$digest\"" '/^FLOCI_IMAGE=/{$0=v} {print}' \
+    versions.env > versions.env.tmp && mv versions.env.tmp versions.env
+  sync_repos
+  for d in "${TF_DIRS[@]}"; do
+    [[ -f "$LAB_DIR/platform-infra/$d/main.tf" ]] || continue
+    tf "$LAB_DIR/platform-infra/$d" providers lock "${TF_PLATFORMS[@]}"
+  done
+  open_lock_pr "$SCRIPT_DIR" mise.lock versions.env
+  open_lock_pr "$LAB_DIR/platform-infra" github/.terraform.lock.hcl foundation/.terraform.lock.hcl
+  log "Lock files refreshed. Merge the pull requests, then run ./bootstrap.sh"
   exit 0
 fi
 
@@ -115,12 +151,8 @@ if [[ -z "$(secret_get ca-key)" ]]; then
 fi
 
 log "4. Repos and GitHub settings"
-mkdir -p "$LAB_DIR" "$STATE_DIR"
-for r in platform-infra platform-gitops platform-tools; do
-  [[ -d "$LAB_DIR/$r" ]] || gh repo clone "$GH_OWNER/$r" "$LAB_DIR/$r"
-  git -C "$LAB_DIR/$r" pull --ff-only
-done
-tf() { terraform -chdir="$1" "${@:2}"; }
+mkdir -p "$STATE_DIR"
+sync_repos
 tf "$LAB_DIR/platform-infra/github" init -input=false -lockfile=readonly \
   -backend-config="path=$STATE_DIR/github.tfstate"
 tf "$LAB_DIR/platform-infra/github" apply -input=false -auto-approve
