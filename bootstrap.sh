@@ -156,3 +156,17 @@ sync_repos
 tf "$LAB_DIR/platform-infra/github" init -input=false -lockfile=readonly \
   -backend-config="path=$STATE_DIR/github.tfstate"
 tf "$LAB_DIR/platform-infra/github" apply -input=false -auto-approve
+
+log "5. Floci and the pretend AWS foundation"
+docker network inspect lab >/dev/null 2>&1 || docker network create lab
+docker-compose -f "$SCRIPT_DIR/floci/compose.yaml" up -d
+export AWS_ACCESS_KEY_ID=test AWS_SECRET_ACCESS_KEY=test AWS_REGION=us-west-2
+deadline=$((SECONDS + 60))
+until aws --endpoint-url http://localhost:4566 sts get-caller-identity >/dev/null 2>&1; do
+  (( SECONDS < deadline )) || { echo "Floci did not start" >&2; exit 1; }
+  sleep 1
+done
+tf "$LAB_DIR/platform-infra/foundation" init -input=false -lockfile=readonly \
+  -backend-config="path=$STATE_DIR/foundation-local.tfstate"
+tf "$LAB_DIR/platform-infra/foundation" apply -input=false -auto-approve \
+  -var-file=env/local.tfvars

@@ -1,0 +1,53 @@
+services:
+  floci:
+    image: ${FLOCI_IMAGE}
+    container_name: floci
+    ports:
+      - "127.0.0.1:4566:4566"
+    environment:
+      FLOCI_STORAGE_MODE: hybrid
+      FLOCI_STORAGE_PERSISTENT_PATH: /app/data
+      FLOCI_STORAGE_PRUNE_VOLUMES_ON_DELETE: "true"
+      FLOCI_SERVICES_DOCKER_NETWORK: lab
+      FLOCI_SERVICES_EKS_DISABLE_CNI: "true"
+    volumes:
+      - floci-data:/app/data
+      - /var/run/docker.sock:/var/run/docker.sock
+    networks:
+      - lab
+    restart: unless-stopped
+
+  cache-docker-io:
+    image: ${REGISTRY_IMAGE}
+    container_name: cache-docker-io
+    environment:
+      REGISTRY_PROXY_REMOTEURL: https://registry-1.docker.io
+    ports:
+      - "127.0.0.1:5001:5000"
+    volumes:
+      - cache-docker-io:/var/lib/registry
+    networks:
+      - lab
+    restart: unless-stopped
+
+  cache-ghcr-io:
+    image: ${REGISTRY_IMAGE}
+    container_name: cache-ghcr-io
+    environment:
+      REGISTRY_PROXY_REMOTEURL: https://ghcr.io
+    ports:
+      - "127.0.0.1:5002:5000"
+    volumes:
+      - cache-ghcr-io:/var/lib/registry
+    networks:
+      - lab
+    restart: unless-stopped
+
+volumes:
+  floci-data:
+  cache-docker-io:
+  cache-ghcr-io:
+
+networks:
+  lab:
+    external: true
