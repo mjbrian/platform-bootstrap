@@ -9,7 +9,18 @@ repos:
         exclude: /templates/
       - id: check-merge-conflict
       - id: check-added-large-files
-  - repo: https://github.com/gitleaks/gitleaks
-    rev: v8.30.0
+      - id: check-executables-have-shebangs
+      - id: check-shebang-scripts-are-executable
+      - id: detect-private-key
+  - repo: local
     hooks:
       - id: gitleaks
+        name: gitleaks
+        entry: gitleaks git --pre-commit --staged --redact --verbose
+        language: system
+        pass_filenames: false
+      - id: shellcheck
+        name: shellcheck
+        entry: shellcheck
+        language: system
+        types: [shell]
