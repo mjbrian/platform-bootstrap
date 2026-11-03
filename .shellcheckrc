@@ -1,0 +1,3 @@
+# Let ShellCheck follow files that scripts source, such as versions.env.
+source-path=SCRIPTDIR
+external-sources=true
