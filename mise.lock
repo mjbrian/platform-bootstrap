@@ -122,6 +122,45 @@ checksum = "sha256:4c864dd7f879dd40366e087e68a8a02cbcf018be0128867b13369898e67e1
 url = "https://github.com/docker/compose/releases/download/v2.40.3/docker-compose-windows-x86_64.exe"
 url_api = "https://api.github.com/repos/docker/compose/releases/assets/310461048"
 
+[[tools."aqua:gitleaks/gitleaks"]]
+version = "8.30.1"
+backend = "aqua:gitleaks/gitleaks"
+
+[tools."aqua:gitleaks/gitleaks"."platforms.linux-arm64"]
+checksum = "sha256:e4a487ee7ccd7d3a7f7ec08657610aa3606637dab924210b3aee62570fb4b080"
+url = "https://github.com/gitleaks/gitleaks/releases/download/v8.30.1/gitleaks_8.30.1_linux_arm64.tar.gz"
+url_api = "https://api.github.com/repos/gitleaks/gitleaks/releases/assets/378332057"
+
+[tools."aqua:gitleaks/gitleaks"."platforms.linux-arm64-musl"]
+checksum = "sha256:e4a487ee7ccd7d3a7f7ec08657610aa3606637dab924210b3aee62570fb4b080"
+url = "https://github.com/gitleaks/gitleaks/releases/download/v8.30.1/gitleaks_8.30.1_linux_arm64.tar.gz"
+url_api = "https://api.github.com/repos/gitleaks/gitleaks/releases/assets/378332057"
+
+[tools."aqua:gitleaks/gitleaks"."platforms.linux-x64"]
+checksum = "sha256:551f6fc83ea457d62a0d98237cbad105af8d557003051f41f3e7ca7b3f2470eb"
+url = "https://github.com/gitleaks/gitleaks/releases/download/v8.30.1/gitleaks_8.30.1_linux_x64.tar.gz"
+url_api = "https://api.github.com/repos/gitleaks/gitleaks/releases/assets/378332058"
+
+[tools."aqua:gitleaks/gitleaks"."platforms.linux-x64-musl"]
+checksum = "sha256:551f6fc83ea457d62a0d98237cbad105af8d557003051f41f3e7ca7b3f2470eb"
+url = "https://github.com/gitleaks/gitleaks/releases/download/v8.30.1/gitleaks_8.30.1_linux_x64.tar.gz"
+url_api = "https://api.github.com/repos/gitleaks/gitleaks/releases/assets/378332058"
+
+[tools."aqua:gitleaks/gitleaks"."platforms.macos-arm64"]
+checksum = "sha256:b40ab0ae55c505963e365f271a8d3846efbc170aa17f2607f13df610a9aeb6a5"
+url = "https://github.com/gitleaks/gitleaks/releases/download/v8.30.1/gitleaks_8.30.1_darwin_arm64.tar.gz"
+url_api = "https://api.github.com/repos/gitleaks/gitleaks/releases/assets/378332059"
+
+[tools."aqua:gitleaks/gitleaks"."platforms.macos-x64"]
+checksum = "sha256:dfe101a4db2255fc85120ac7f3d25e4342c3c20cf749f2c20a18081af1952709"
+url = "https://github.com/gitleaks/gitleaks/releases/download/v8.30.1/gitleaks_8.30.1_darwin_x64.tar.gz"
+url_api = "https://api.github.com/repos/gitleaks/gitleaks/releases/assets/378332053"
+
+[tools."aqua:gitleaks/gitleaks"."platforms.windows-x64"]
+checksum = "sha256:d29144deff3a68aa93ced33dddf84b7fdc26070add4aa0f4513094c8332afc4e"
+url = "https://github.com/gitleaks/gitleaks/releases/download/v8.30.1/gitleaks_8.30.1_windows_x64.zip"
+url_api = "https://api.github.com/repos/gitleaks/gitleaks/releases/assets/378333178"
+
 [[tools."aqua:google/go-containerregistry"]]
 version = "0.22.1"
 backend = "aqua:google/go-containerregistry"
@@ -510,45 +549,6 @@ url = "https://github.com/jqlang/jq/releases/download/jq-1.8.2/jq-windows-amd64.
 url_api = "https://api.github.com/repos/jqlang/jq/releases/assets/453012788"
 provenance = "github-attestations"
 
-[[tools.k3d]]
-version = "5.9.0"
-backend = "aqua:k3d-io/k3d"
-
-[tools.k3d."platforms.linux-arm64"]
-checksum = "sha256:03cde5cf23e6e8e67de5a039ecf26e5b85aca82fba3e5d13dadf904cd218a250"
-url = "https://github.com/k3d-io/k3d/releases/download/v5.9.0/k3d-linux-arm64"
-url_api = "https://api.github.com/repos/k3d-io/k3d/releases/assets/436305757"
-
-[tools.k3d."platforms.linux-arm64-musl"]
-checksum = "sha256:03cde5cf23e6e8e67de5a039ecf26e5b85aca82fba3e5d13dadf904cd218a250"
-url = "https://github.com/k3d-io/k3d/releases/download/v5.9.0/k3d-linux-arm64"
-url_api = "https://api.github.com/repos/k3d-io/k3d/releases/assets/436305757"
-
-[tools.k3d."platforms.linux-x64"]
-checksum = "sha256:06d8f25bc3a971c4eb29e0ff08429b180402db0f4dec838c9eac427e296800a0"
-url = "https://github.com/k3d-io/k3d/releases/download/v5.9.0/k3d-linux-amd64"
-url_api = "https://api.github.com/repos/k3d-io/k3d/releases/assets/436305793"
-
-[tools.k3d."platforms.linux-x64-musl"]
-checksum = "sha256:06d8f25bc3a971c4eb29e0ff08429b180402db0f4dec838c9eac427e296800a0"
-url = "https://github.com/k3d-io/k3d/releases/download/v5.9.0/k3d-linux-amd64"
-url_api = "https://api.github.com/repos/k3d-io/k3d/releases/assets/436305793"
-
-[tools.k3d."platforms.macos-arm64"]
-checksum = "sha256:fe106541d5d0a3f18debcd4d432a16f8c0ce3e6ddc06f8fbb6f696a122313e00"
-url = "https://github.com/k3d-io/k3d/releases/download/v5.9.0/k3d-darwin-arm64"
-url_api = "https://api.github.com/repos/k3d-io/k3d/releases/assets/436305875"
-
-[tools.k3d."platforms.macos-x64"]
-checksum = "sha256:b4aabc37534f95b9c764e7823f2df923f50d57600837aa60a06266cce47db732"
-url = "https://github.com/k3d-io/k3d/releases/download/v5.9.0/k3d-darwin-amd64"
-url_api = "https://api.github.com/repos/k3d-io/k3d/releases/assets/436305915"
-
-[tools.k3d."platforms.windows-x64"]
-checksum = "sha256:49d0b9c796f5b8ba6f58a1dd5469e8b7b34bf9b6ce9078633eedb2789680a034"
-url = "https://github.com/k3d-io/k3d/releases/download/v5.9.0/k3d-windows-amd64.exe"
-url_api = "https://api.github.com/repos/k3d-io/k3d/releases/assets/436305724"
-
 [[tools.kubectl]]
 version = "1.35.9"
 backend = "aqua:kubernetes/kubernetes/kubectl"
@@ -580,6 +580,40 @@ url = "https://dl.k8s.io/v1.35.9/bin/darwin/amd64/kubectl"
 [tools.kubectl."platforms.windows-x64"]
 checksum = "sha256:160bebf50d49ac4b5892370803da09cc26bbeabed6a4cf22bf382bd72d14d4d7"
 url = "https://dl.k8s.io/v1.35.9/bin/windows/amd64/kubectl.exe"
+
+[[tools.pre-commit]]
+version = "4.7.0"
+backend = "aqua:pre-commit/pre-commit"
+
+[tools.pre-commit."platforms.linux-arm64"]
+checksum = "sha256:393488513aed286d7a5a978a1fe79b2f5a8802927242a2d241ff10c1a8e8c885"
+url = "https://github.com/pre-commit/pre-commit/releases/download/v4.7.0/pre-commit-4.7.0.pyz"
+url_api = "https://api.github.com/repos/pre-commit/pre-commit/releases/assets/637459099"
+
+[tools.pre-commit."platforms.linux-arm64-musl"]
+checksum = "sha256:393488513aed286d7a5a978a1fe79b2f5a8802927242a2d241ff10c1a8e8c885"
+url = "https://github.com/pre-commit/pre-commit/releases/download/v4.7.0/pre-commit-4.7.0.pyz"
+url_api = "https://api.github.com/repos/pre-commit/pre-commit/releases/assets/637459099"
+
+[tools.pre-commit."platforms.linux-x64"]
+checksum = "sha256:393488513aed286d7a5a978a1fe79b2f5a8802927242a2d241ff10c1a8e8c885"
+url = "https://github.com/pre-commit/pre-commit/releases/download/v4.7.0/pre-commit-4.7.0.pyz"
+url_api = "https://api.github.com/repos/pre-commit/pre-commit/releases/assets/637459099"
+
+[tools.pre-commit."platforms.linux-x64-musl"]
+checksum = "sha256:393488513aed286d7a5a978a1fe79b2f5a8802927242a2d241ff10c1a8e8c885"
+url = "https://github.com/pre-commit/pre-commit/releases/download/v4.7.0/pre-commit-4.7.0.pyz"
+url_api = "https://api.github.com/repos/pre-commit/pre-commit/releases/assets/637459099"
+
+[tools.pre-commit."platforms.macos-arm64"]
+checksum = "sha256:393488513aed286d7a5a978a1fe79b2f5a8802927242a2d241ff10c1a8e8c885"
+url = "https://github.com/pre-commit/pre-commit/releases/download/v4.7.0/pre-commit-4.7.0.pyz"
+url_api = "https://api.github.com/repos/pre-commit/pre-commit/releases/assets/637459099"
+
+[tools.pre-commit."platforms.macos-x64"]
+checksum = "sha256:393488513aed286d7a5a978a1fe79b2f5a8802927242a2d241ff10c1a8e8c885"
+url = "https://github.com/pre-commit/pre-commit/releases/download/v4.7.0/pre-commit-4.7.0.pyz"
+url_api = "https://api.github.com/repos/pre-commit/pre-commit/releases/assets/637459099"
 
 [[tools.shellcheck]]
 version = "0.11.0"
