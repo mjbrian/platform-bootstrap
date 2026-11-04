@@ -143,6 +143,8 @@ if [[ "$ACTION" == "lock" ]]; then
   sync_repos
   for d in "${TF_DIRS[@]}"; do
     [[ -f "$LAB_DIR/platform-infra/$d/main.tf" ]] || continue
+    # providers lock reads module sources too, so install the modules first.
+    tf "$LAB_DIR/platform-infra/$d" get
     tf "$LAB_DIR/platform-infra/$d" providers lock "${TF_PLATFORMS[@]}"
   done
   log "Opening pull requests for anything that changed"
