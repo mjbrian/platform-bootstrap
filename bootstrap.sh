@@ -282,7 +282,6 @@ tf_init "$LAB_DIR/platform-infra/cluster-addons" "$STATE_DIR/cluster-addons/$c.t
 tf "$LAB_DIR/platform-infra/cluster-addons" apply -input=false -auto-approve \
   -var-file=env/local.tfvars -var-file="env/$c.tfvars" \
   -var "kube_proxy_version=$KUBE_PROXY_VERSION" \
-  -var "calico_chart_version=$CALICO_CHART_VERSION" \
   -var "gitops_dir=$LAB_DIR/platform-gitops" \
   -var "profile=$(cat "$STATE_DIR/profile-$c" 2>/dev/null || true)"
 kubectl --context "$c" wait --for=condition=Ready nodes --all --timeout=300s
